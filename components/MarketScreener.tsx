@@ -1063,18 +1063,17 @@ const MarketScreener: React.FC<MarketScreenerProps> = ({
   };
 
   return (
-    <div className="flex flex-col h-full bg-transparent text-gray-300 font-rajdhani overflow-x-auto relative custom-scroll">
+    <div className="flex flex-col h-full bg-transparent text-gray-300 font-rajdhani overflow-hidden relative w-full">
       
       <div 
         ref={scrollContainerRef}
-        className={`flex-1 overflow-y-auto custom-scroll flex flex-col bg-[#050505] ${isResizing ? 'select-none cursor-row-resize' : ''}`}
+        className={`flex-1 flex flex-col w-full bg-[#050505] overflow-hidden ${isResizing ? 'select-none cursor-row-resize' : ''}`}
       >
         <div id="screener-top-anchor" className="h-0 w-0 opacity-0 pointer-events-none" />
-        {/* ОБЛАСТЬ ГРАФИКА - ТЕПЕРЬ ВНУТРИ ПРОКРУТКИ И ЗАКРЕПЛЕНА */}
+        {/* CHART AREA - NOW FLEX-1 TO DYNAMICALLY FILL AVAILABLE SPACE */}
         <div 
           ref={chartContainerRef}
-          className="sticky top-0 z-[100] flex flex-col border-b border-white/5 bg-[#0a0a0a] shrink-0 shadow-xl"
-          style={{ height: `${chartHeight}px` }}
+          className="flex-1 min-h-0 relative flex flex-col border-b border-white/5 bg-[#0a0a0a] shadow-xl"
         >
           {!isFullscreen && (
             <FavoritesBar 
@@ -1277,29 +1276,13 @@ const MarketScreener: React.FC<MarketScreenerProps> = ({
               </div>
             </div>
           )}
-
-          {!isFullscreen && (
-            <div 
-              onMouseDown={handleResizeStart}
-              className={`hidden md:flex absolute bottom-0 left-0 right-0 h-[6px] z-[130] cursor-row-resize items-center justify-center group/resize transition-all duration-300 ${
-                isResizing ? 'bg-zinc-800' : 'bg-white/5 hover:bg-zinc-800/50'
-              }`}
-            >
-               <div className={`px-4 py-0.5 rounded-full flex items-center gap-1 transition-all duration-300 ${
-                 isResizing ? 'bg-zinc-900 text-zinc-400 border border-zinc-700 scale-105' : 'bg-[#111] text-gray-500 border border-white/10 group-hover/resize:bg-zinc-800 group-hover/resize:text-zinc-300'
-               }`}>
-                 <GripHorizontal size={10} strokeWidth={3} />
-                 <span className="text-8px font-black uppercase tracking-tighter">Resize</span>
-               </div>
-            </div>
-          )}
         </div>
 
-        {/* ЛЕНТА ИЗБРАННОГО */}
+        {/* ЛЕНТА ИЗБРАННОГО / СПИСОК МОНЕТ - NOW FIXED HEIGHT TO FIT EXACTLY 3 ROWS */}
 
         {!hideList && !isFullscreen && (
-          <div className="flex flex-col bg-[#0a0a0a] relative min-h-screen" id="market-feed-section">
-            <div className="sticky top-0 bg-[#0a0a0a] border-b border-white/5 shadow-2xl z-[1000]">
+          <div className="flex flex-col shrink-0 h-[260px] overflow-hidden bg-[#0a0a0a] relative" id="market-feed-section">
+            <div className="sticky top-0 bg-[#0a0a0a] border-b border-white/5 shadow-2xl z-[1000] shrink-0">
               <div className="min-h-[44px] md:min-h-[56px] h-auto px-2 sm:px-4 py-3 flex flex-row flex-nowrap items-center gap-3 md:gap-4 shrink-0 relative z-[1010] overflow-x-auto no-scrollbar">
               {/* VIEW MODE PILL (IMAGE STYLE) */}
               <div className="flex items-center bg-[#0a0a0a] border border-zinc-800 rounded-full p-0.5 shrink-0">
@@ -1593,7 +1576,7 @@ const MarketScreener: React.FC<MarketScreenerProps> = ({
                 </div>
               </div>
             )}
-          <div className="flex-1">
+          <div className="flex-1 overflow-y-auto custom-scroll relative">
             {loading && data.length === 0 ? (
               <div className={viewMode === 'grid' ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 p-4 sm:p-6 pb-24" : "w-full pb-24"}>
                 {[...Array(12)].map((_, i) => (

@@ -212,7 +212,7 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col font-sans relative overflow-x-auto overflow-y-auto bg-[#0a0a0a] text-white custom-scroll overscroll-behavior-none">
+    <div className="h-screen w-screen flex flex-col font-sans relative overflow-hidden bg-[#0a0a0a] text-white custom-scroll overscroll-behavior-none">
       <ToastContainer toasts={toasts} removeToast={(id) => setToasts(t => t.filter(x => x.id !== id))} />
 
       {currentView === 'profile' && isAuthenticated ? (
